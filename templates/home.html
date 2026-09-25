@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Safe Loan Check{% endblock %}
+{% block content %}
+<section class="finance-hero home-hero reveal">
+  <div class="finance-hero-content">
+    <div class="hero-badge"><span class="hero-badge-dot"></span> {{ t('home.badge') }}</div>
+    <h1>{{ t('home.title1') }} <span>{{ t('home.title2') }}</span></h1>
+    <p class="hero-description">{{ t('home.description') }}</p>
+    <div class="hero-actions">
+      <a href="{{ url_for('check_app') }}" class="finance-btn finance-btn-primary">{{ t('home.run') }} <span>→</span></a>
+      <a href="#tools" class="finance-btn finance-btn-outline">{{ t('home.explore') }}</a>
+    </div>
+    <div class="hero-mini-features">
+      <div><span class="mini-check">✓</span> {{ t('home.feature1') }}</div>
+      <div><span class="mini-check">✓</span> {{ t('home.feature2') }}</div>
+      <div><span class="mini-check">✓</span> {{ t('home.feature3') }}</div>
+    </div>
+  </div>
+  <div class="finance-hero-visual home-logo-stage">
+    <div class="hero-glow"></div>
+    <div class="home-logo-card">
+      <img src="{{ url_for('static', filename='img/safe-loan-check-icon.png') }}" alt="Safe Loan Check">
+      <strong>Safe Loan Check</strong>
+      <span>{{ t('home.logo_line') }}</span>
+    </div>
+    <div class="floating-card floating-health"><div class="floating-icon">01</div><div><small>{{ t('home.identity') }}</small><strong>{{ t('home.directory') }}</strong></div></div>
+    <div class="floating-card floating-ai"><div class="floating-icon">AI</div><div><small>{{ t('home.explainable_ai') }}</small><strong>{{ t('home.risk_signals') }}</strong></div></div>
+  </div>
+</section>
+
+<section class="finance-stats reveal">
+  <div class="finance-stat"><strong>3</strong><span>{{ t('home.primary_checks') }}</span></div>
+  <div class="finance-stat"><strong>0–100</strong><span>{{ t('home.ml_score') }}</span></div>
+  <div class="finance-stat"><strong>APR</strong><span>{{ t('home.true_cost') }}</span></div>
+  <div class="finance-stat"><strong>3</strong><span>{{ t('home.decision_layer') }}</span></div>
+</section>
+
+<section class="section-head reveal" id="tools">
+  <span class="eyebrow">{{ t('home.tools') }}</span>
+  <h2>{{ t('home.tools_title') }}</h2>
+  <p class="section-copy">{{ t('home.tools_desc') }}</p>
+</section>
+
+<section class="tool-detail-grid">
+  <article class="tool-detail-card reveal"><div class="tool-icon">01</div><div><span class="eyebrow">{{ t('home.verify') }}</span><h3>{{ t('home.directory_title') }}</h3><p>{{ t('home.directory_desc') }}</p><ul><li>{{ t('home.directory_li1') }}</li><li>{{ t('home.directory_li2') }}</li><li>{{ t('home.directory_li3') }}</li><li>{{ t('home.directory_li4') }}</li></ul></div></article>
+  <article class="tool-detail-card reveal"><div class="tool-icon">AI</div><div><span class="eyebrow">{{ t('home.analyze') }}</span><h3>{{ t('home.ml_title') }}</h3><p>{{ t('home.ml_desc') }}</p><ul><li>{{ t('home.ml_li1') }}</li><li>{{ t('home.ml_li2') }}</li><li>{{ t('home.ml_li3') }}</li><li>{{ t('home.ml_li4') }}</li></ul></div></article>
+  <article class="tool-detail-card reveal"><div class="tool-icon">₹</div><div><span class="eyebrow">{{ t('home.calculate') }}</span><h3>{{ t('home.cost_title') }}</h3><p>{{ t('home.cost_desc') }}</p><ul><li>{{ t('home.cost_li1') }}</li><li>{{ t('home.cost_li2') }}</li><li>{{ t('home.cost_li3') }}</li><li>{{ t('home.cost_li4') }}</li></ul></div></article>
+  <article class="tool-detail-card reveal"><div class="tool-icon">✓</div><div><span class="eyebrow">{{ t('home.combine') }}</span><h3>{{ t('home.decision_title') }}</h3><p>{{ t('home.decision_desc') }}</p><ul><li><strong class="green-text">{{ t('home.green') }}</strong></li><li><strong class="amber-text">{{ t('home.amber') }}</strong></li><li><strong class="red-text">{{ t('home.red') }}</strong></li></ul></div></article>
+</section>
+
+<section class="section-head reveal"><span class="eyebrow">{{ t('home.how') }}</span><h2>{{ t('home.how_title') }}</h2></section>
+<section class="how-grid">
+  <div class="how-step reveal"><span>1</span><strong>{{ t('home.step1') }}</strong><p>{{ t('home.step1_desc') }}</p></div>
+  <div class="how-step reveal"><span>2</span><strong>{{ t('home.step2') }}</strong><p>{{ t('home.step2_desc') }}</p></div>
+  <div class="how-step reveal"><span>3</span><strong>{{ t('home.step3') }}</strong><p>{{ t('home.step3_desc') }}</p></div>
+  <div class="how-step reveal"><span>4</span><strong>{{ t('home.step4') }}</strong><p>{{ t('home.step4_desc') }}</p></div>
+</section>
+
+<section class="home-cta reveal"><div><span class="eyebrow">{{ t('home.ready') }}</span><h2>{{ t('home.cta_title') }}</h2><p>{{ t('home.cta_desc') }}</p></div><a href="{{ url_for('check_app') }}" class="finance-btn finance-btn-primary">{{ t('home.open') }} <span>→</span></a></section>
+{% endblock %}

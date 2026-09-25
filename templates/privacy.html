@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}{{ t('footer.privacy') }} · Safe Loan Check{% endblock %}
+{% block content %}
+<section class="page-head reveal"><div><span class="eyebrow">{{ t('privacy.eyebrow') }}</span><h1>{{ t('privacy.title') }}</h1><p>{{ t('privacy.desc') }}</p></div></section>
+<section class="card policy-card reveal"><h2>{{ t('privacy.processes') }}</h2><p>{{ t('privacy.processes_desc') }}</p><h2>{{ t('privacy.not_stored') }}</h2><p>{{ t('privacy.not_stored_desc') }}</p><h2>{{ t('privacy.cache') }}</h2><p>{{ t('privacy.cache_desc') }}</p><h2>{{ t('privacy.sensitive') }}</h2><p>{{ t('privacy.sensitive_desc') }}</p></section>
+{% endblock %}

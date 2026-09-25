@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}{{ code }} · Safe Loan Check{% endblock %}
+{% block content %}
+<section class="error-state reveal"><span class="error-code">{{ code }}</span><h1>{{ title }}</h1><p>{{ message }}</p><a class="finance-btn finance-btn-primary" href="{{ url_for('check_app') }}">{{ t('common.return_check') }}</a></section>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ t('nav.methodology') }} · Safe Loan Check{% endblock %}
+{% block content %}
+<section class="page-hero reveal"><div class="hero-badge"><span class="hero-badge-dot"></span> {{ t('method.badge') }}</div><span class="eyebrow">{{ t('method.eyebrow') }}</span><h1>{{ t('method.title') }}</h1><p>{{ t('method.desc') }}</p></section>
+<section class="method-grid">
+  <article class="card feature-card reveal"><span class="module-icon">01</span><h2>{{ t('home.directory_title') }}</h2><p>{{ t('method.directory_desc') }}</p><div class="tag-row"><span>Listed</span><span>Not found</span><span>Unclear</span></div></article>
+  <article class="card feature-card reveal"><span class="module-icon">02</span><h2>{{ t('home.ml_title') }}</h2><p>{{ t('method.ml_desc') }}</p><div class="tag-row"><span>Real labels</span><span>Random Forest</span><span>Recall-first</span></div></article>
+  <article class="card feature-card reveal"><span class="module-icon">03</span><h2>{{ t('home.cost_title') }}</h2><p>{{ t('method.cost_desc') }}</p><div class="tag-row"><span>APR</span><span>Repayment</span><span>Affordability</span></div></article>
+</section>
+<section class="card evidence-card reveal"><div><span class="eyebrow">{{ t('method.evidence') }}</span><h2>{{ t('method.evidence_title') }}</h2></div><div class="evidence-grid"><div><strong>100+</strong><span>{{ t('method.survey') }}</span></div><div><strong>150–300</strong><span>{{ t('method.listings') }}</span></div><div><strong>3</strong><span>{{ t('method.models') }}</span></div><div><strong>30</strong><span>{{ t('method.pilot') }}</span></div></div><ul class="method-list"><li>{{ t('method.li1') }}</li><li>{{ t('method.li2') }}</li><li>{{ t('method.li3') }}</li><li>{{ t('method.li4') }}</li></ul></section>
+{% endblock %}

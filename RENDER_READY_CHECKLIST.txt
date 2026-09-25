@@ -1,0 +1,24 @@
+SAFE LOAN CHECK v2.6 — RENDER READY CHECKLIST
+
+[OK] venv removed
+[OK] .env removed
+[OK] .gitignore protects secrets, venv, cache and survey exports
+[OK] render.yaml at repository root
+[OK] Render plan = free
+[OK] Render region = singapore
+[OK] runtime = docker
+[OK] healthCheckPath = /readyz
+[OK] autoDeployTrigger = commit
+[OK] Dockerfile uses Python 3.11
+[OK] Docker HEALTHCHECK respects Render's $PORT
+[OK] wsgi.py present
+[OK] gunicorn.conf.py present
+[OK] requirements.txt present
+[OK] real RBI directory bundled
+[OK] ML model artifacts bundled
+
+DO NOT UPLOAD:
+- venv/
+- .env
+- local SQLite cache
+- raw Google Form response exports

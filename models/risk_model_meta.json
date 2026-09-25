@@ -1,0 +1,258 @@
+{
+  "model_version": "real-label-name-signal-v1",
+  "model_name": "Random Forest — Real Label Name Signals",
+  "model_type": "lexical_random_forest",
+  "training_data": "Real labels only: 200 Verified RBI-DLA examples + 33 Risky RBI enforcement-evidence examples",
+  "training_records": 233,
+  "verified_records": 200,
+  "risky_records": 33,
+  "is_synthetic": false,
+  "high_risk_threshold": 0.4199999999999998,
+  "held_out_metrics": {
+    "precision_risky": 0.5,
+    "recall_risky": 1.0,
+    "f1_risky": 0.6666666666666666,
+    "pr_auc": 0.577922077922078,
+    "confusion_matrix": [
+      [
+        33,
+        7
+      ],
+      [
+        0,
+        7
+      ]
+    ]
+  },
+  "baseline_metrics": {
+    "rule": "Risky if app name contains substring 'cash' or 'loan'",
+    "precision_risky": 0.2631578947368421,
+    "recall_risky": 0.7142857142857143,
+    "f1_risky": 0.38461538461538464,
+    "confusion_matrix": [
+      [
+        26,
+        14
+      ],
+      [
+        2,
+        5
+      ]
+    ]
+  },
+  "feature_names": [
+    "name_length_chars",
+    "name_word_count",
+    "name_digit_count",
+    "name_symbol_count",
+    "name_uppercase_ratio",
+    "name_has_loan",
+    "name_has_cash",
+    "name_has_rupee",
+    "name_has_credit",
+    "name_has_borrow",
+    "name_has_lend",
+    "name_has_money",
+    "name_has_paisa",
+    "name_has_finance",
+    "name_has_instant",
+    "name_has_quick",
+    "name_has_easy",
+    "name_has_kredit",
+    "name_has_advance",
+    "name_has_emi"
+  ],
+  "feature_importance": [
+    {
+      "feature": "name_length_chars",
+      "importance": 0.301189
+    },
+    {
+      "feature": "name_uppercase_ratio",
+      "importance": 0.201134
+    },
+    {
+      "feature": "name_word_count",
+      "importance": 0.178337
+    },
+    {
+      "feature": "name_has_cash",
+      "importance": 0.139931
+    },
+    {
+      "feature": "name_symbol_count",
+      "importance": 0.05247
+    },
+    {
+      "feature": "name_has_loan",
+      "importance": 0.051173
+    },
+    {
+      "feature": "name_has_rupee",
+      "importance": 0.023052
+    },
+    {
+      "feature": "name_digit_count",
+      "importance": 0.009943
+    },
+    {
+      "feature": "name_has_credit",
+      "importance": 0.008564
+    },
+    {
+      "feature": "name_has_money",
+      "importance": 0.007945
+    },
+    {
+      "feature": "name_has_instant",
+      "importance": 0.005135
+    },
+    {
+      "feature": "name_has_quick",
+      "importance": 0.00511
+    },
+    {
+      "feature": "name_has_lend",
+      "importance": 0.004951
+    },
+    {
+      "feature": "name_has_paisa",
+      "importance": 0.004744
+    },
+    {
+      "feature": "name_has_kredit",
+      "importance": 0.002712
+    },
+    {
+      "feature": "name_has_finance",
+      "importance": 0.002315
+    },
+    {
+      "feature": "name_has_easy",
+      "importance": 0.001296
+    },
+    {
+      "feature": "name_has_borrow",
+      "importance": 0.0
+    },
+    {
+      "feature": "name_has_advance",
+      "importance": 0.0
+    },
+    {
+      "feature": "name_has_emi",
+      "importance": 0.0
+    }
+  ],
+  "token_stats": {
+    "loan": {
+      "risky": 10,
+      "verified": 49,
+      "total": 59,
+      "risky_rate": 0.1695,
+      "lift_vs_base": 1.197
+    },
+    "cash": {
+      "risky": 13,
+      "verified": 12,
+      "total": 25,
+      "risky_rate": 0.52,
+      "lift_vs_base": 3.672
+    },
+    "rupee": {
+      "risky": 4,
+      "verified": 8,
+      "total": 12,
+      "risky_rate": 0.3333,
+      "lift_vs_base": 2.354
+    },
+    "credit": {
+      "risky": 1,
+      "verified": 11,
+      "total": 12,
+      "risky_rate": 0.0833,
+      "lift_vs_base": 0.588
+    },
+    "borrow": {
+      "risky": 1,
+      "verified": 0,
+      "total": 1,
+      "risky_rate": 1.0,
+      "lift_vs_base": 7.061
+    },
+    "lend": {
+      "risky": 2,
+      "verified": 6,
+      "total": 8,
+      "risky_rate": 0.25,
+      "lift_vs_base": 1.765
+    },
+    "money": {
+      "risky": 2,
+      "verified": 9,
+      "total": 11,
+      "risky_rate": 0.1818,
+      "lift_vs_base": 1.284
+    },
+    "paisa": {
+      "risky": 0,
+      "verified": 7,
+      "total": 7,
+      "risky_rate": 0.0,
+      "lift_vs_base": 0.0
+    },
+    "finance": {
+      "risky": 0,
+      "verified": 6,
+      "total": 6,
+      "risky_rate": 0.0,
+      "lift_vs_base": 0.0
+    },
+    "instant": {
+      "risky": 1,
+      "verified": 5,
+      "total": 6,
+      "risky_rate": 0.1667,
+      "lift_vs_base": 1.177
+    },
+    "quick": {
+      "risky": 2,
+      "verified": 3,
+      "total": 5,
+      "risky_rate": 0.4,
+      "lift_vs_base": 2.824
+    },
+    "easy": {
+      "risky": 1,
+      "verified": 1,
+      "total": 2,
+      "risky_rate": 0.5,
+      "lift_vs_base": 3.53
+    },
+    "kredit": {
+      "risky": 1,
+      "verified": 4,
+      "total": 5,
+      "risky_rate": 0.2,
+      "lift_vs_base": 1.412
+    },
+    "advance": {
+      "risky": 0,
+      "verified": 1,
+      "total": 1,
+      "risky_rate": 0.0,
+      "lift_vs_base": 0.0
+    },
+    "emi": {
+      "risky": 0,
+      "verified": 0,
+      "total": 0,
+      "risky_rate": 0.0,
+      "lift_vs_base": 0.0
+    }
+  },
+  "model_scope": "App-name lexical risk signals only; directory status and directory similarity are excluded.",
+  "data_note": "REAL-LABEL EXPERIMENTAL MODEL: trained on 233 labelled app names (200 Verified, 33 Risky). Current v1 risk probability uses app-name lexical signals only. Public listing fields are displayed as contextual warning/positive signals but are not yet learned by this model. Do not treat the score as a legality verdict.",
+  "sklearn_version": "1.8.0",
+  "deployment_status": "experimental_model_in_production_candidate"
+}

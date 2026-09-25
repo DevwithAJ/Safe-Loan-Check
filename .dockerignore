@@ -1,0 +1,21 @@
+.git
+.github
+venv
+.venv
+env
+__pycache__
+**/__pycache__
+.pytest_cache
+*.pyc
+*.pyo
+*.log
+.env
+.env.*
+!.env.example
+!.env.production.example
+instance/*.sqlite3
+instance/*.sqlite3-*
+data/real/survey_responses.csv
+*Form Responses*.csv
+tests
+pilot

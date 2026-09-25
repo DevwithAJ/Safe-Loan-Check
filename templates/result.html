@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}Safe Loan Check · {{ app_name }}{% endblock %}
+{% block content %}
+
+{% set verdict = decision.verdict %}
+{% set listing_needs_review = risk.listing_signal_level in ['High', 'Moderate'] %}
+{% set ai_high = risk.ready and risk.risk_probability is not none and risk.risk_probability >= high_risk_threshold %}
+
+<section class="result-hero reveal">
+  <div>
+    <div class="hero-badge"><span class="hero-badge-dot"></span> {{ t('result.complete') }}</div>
+    <h1>{{ app_name }}</h1>
+    {% if developer_name %}<p>{{ developer_name }}</p>{% endif %}
+    <div class="result-meta">
+      <span>{{ t('result.directory') }}: <strong>{{ directory.status }}</strong></span>
+      {% if risk.ready %}<span>{{ t('result.ai_risk') }}: <strong>{{ risk.risk_score }}/100</strong></span>{% endif %}
+      <span>{{ t('result.public_attention') }}: <strong>{% if listing_needs_review %}{{ t('result.public_review') }}{% elif risk.listing_signal_level == 'Low' %}{{ t('result.public_ok') }}{% else %}{{ t('result.public_unknown') }}{% endif %}</strong></span>
+      {% if cost and cost.valid and cost.apr_percent is not none %}<span>{{ t('result.apr') }}: <strong>{{ cost.apr_percent }}%</strong></span>{% endif %}
+      {% if cost_attention %}<span class="cost-meta-attention">{{ t('result.cost') }}: <strong>{{ t('result.attention') }}</strong></span>{% endif %}
+    </div>
+  </div>
+  <div class="verdict-orb {{ verdict|lower }}"><small>{{ t('result.identity_risk') }}</small><strong>{{ verdict }}</strong></div>
+</section>
+
+<!-- User-first summary: this is intentionally simpler than the technical cards below. -->
+<section class="plain-result-card {{ verdict|lower }} reveal">
+  <div class="plain-result-main">
+    <span class="plain-result-kicker">{{ t('result.simple_title') }}</span>
+    {% if verdict == 'Green' %}
+      <h2>{{ t('result.green_title') }}</h2><p>{{ t('result.green_desc') }}</p>
+    {% elif verdict == 'Red' %}
+      <h2>{{ t('result.red_title') }}</h2><p>{{ t('result.red_desc') }}</p>
+    {% else %}
+      <h2>{{ t('result.amber_title') }}</h2><p>{{ t('result.amber_desc') }}</p>
+    {% endif %}
+  </div>
+
+  <div class="plain-status-grid">
+    <div class="plain-status-item {% if directory.status == 'Listed' %}good{% elif directory.status == 'Not listed' %}danger{% else %}warn{% endif %}">
+      <span class="plain-status-icon">{% if directory.status == 'Listed' %}✓{% elif directory.status == 'Not listed' %}!{% else %}?{% endif %}</span>
+      <small>{{ t('result.identity_check') }}</small>
+      <strong>{% if directory.status == 'Listed' %}{{ t('result.identity_good') }}{% elif directory.status == 'Not listed' %}{{ t('result.identity_missing') }}{% else %}{{ t('result.identity_unclear') }}{% endif %}</strong>
+    </div>
+    <div class="plain-status-item {% if ai_high %}danger{% elif risk.ready %}good{% else %}warn{% endif %}">
+      <span class="plain-status-icon">AI</span>
+      <small>{{ t('result.ai_signal') }}</small>
+      <strong>{% if ai_high %}{{ t('result.ai_high') }}{% elif risk.ready %}{{ t('result.ai_low') }} · {{ risk.risk_score }}/100{% else %}{{ t('result.ai_unavailable') }}{% endif %}</strong>
+    </div>
+    <div class="plain-status-item {% if listing_needs_review %}warn{% elif risk.listing_signal_level == 'Low' %}good{% else %}neutral{% endif %}">
+      <span class="plain-status-icon">WEB</span>
+      <small>{{ t('result.public_check') }}</small>
+      <strong>{% if listing_needs_review %}{{ t('result.public_review') }}{% elif risk.listing_signal_level == 'Low' %}{{ t('result.public_ok') }}{% else %}{{ t('result.public_unknown') }}{% endif %}</strong>
+    </div>
+    <div class="plain-status-item {% if cost_attention %}warn{% elif cost and cost.valid %}good{% else %}neutral{% endif %}">
+      <span class="plain-status-icon">₹</span>
+      <small>{{ t('result.cost_check') }}</small>
+      <strong>{% if cost_attention %}{{ t('result.cost_attention') }}{% elif cost and cost.valid %}{{ t('result.cost_ok') }}{% else %}{{ t('result.cost_not_checked') }}{% endif %}</strong>
+    </div>
+  </div>
+
+  <div class="why-result-box">
+    <strong>{{ t('result.why') }}</strong>
+    {% if verdict == 'Red' %}
+      <p>{{ t('result.why_red') }}</p>
+    {% elif directory.status == 'Not listed' %}
+      <p>{{ t('result.why_not_listed') }}</p>
+    {% elif directory.status == 'Unclear' %}
+      <p>{{ t('result.why_unclear') }}</p>
+    {% elif cost_attention or (cost and cost.valid and cost.emi_income_ratio is not none and cost.emi_income_ratio > affordability_threshold) %}
+      <p>{{ t('result.why_listed_cost') }}</p>
+    {% elif listing_needs_review or ai_high %}
+      <p>{{ t('result.why_listed_review') }}</p>
+    {% else %}
+      <p>{{ t('result.why_green') }}</p>
+    {% endif %}
+  </div>
+
+  <div class="plain-next-steps">
+    <strong>{{ t('result.next_title') }}</strong>
+    <div class="plain-action-grid">
+      <span>1. {{ t('result.next1') }}</span>
+      <span>2. {{ t('result.next2') }}</span>
+      <span>3. {{ t('result.next3') }}</span>
+      <span>4. {{ t('result.next4') }}</span>
+    </div>
+  </div>
+
+  <div class="color-guide">
+    <strong>{{ t('result.colors') }}</strong>
+    <span class="color-guide-item green"><i></i>{{ t('result.color_green') }}</span>
+    <span class="color-guide-item amber"><i></i>{{ t('result.color_amber') }}</span>
+    <span class="color-guide-item red"><i></i>{{ t('result.color_red') }}</span>
+  </div>
+</section>
+
+<details class="technical-details reveal">
+  <summary>
+    <span><strong>{{ t('result.tech_open') }}</strong><small>{{ t('result.tech_help') }}</small></span>
+    <span class="technical-chevron">⌄</span>
+  </summary>
+  <div class="technical-details-body">
+    <section class="analysis-summary">
+      <div class="summary-item"><span class="summary-icon">✓</span><div><small>{{ t('result.directory') }}</small><strong>{{ directory.status }}</strong></div></div>
+      <div class="summary-item"><span class="summary-icon">AI</span><div><small>{{ t('result.ai_risk') }}</small><strong>{% if risk.ready %}{{ risk.risk_score }}/100{% else %}N/A{% endif %}</strong></div></div>
+      <div class="summary-item"><span class="summary-icon">WEB</span><div><small>{{ t('result.public_check') }}</small><strong>{{ metadata.status|replace('_',' ')|title }}</strong></div></div>
+      <div class="summary-item"><span class="summary-icon">%</span><div><small>{{ t('result.emi_income') }}</small><strong>{% if cost and cost.valid and cost.emi_income_ratio is not none %}{{ (cost.emi_income_ratio * 100)|round(1) }}%{% else %}N/A{% endif %}</strong></div></div>
+    </section>
+
+    <div class="result-grid production-result-grid">
+      <section class="card analysis-card">
+        <div class="card-topline"><span class="module-icon">01</span><span class="eyebrow">{{ t('result.directory_check') }}</span></div>
+        <h2>{{ t('result.identity_verification') }}</h2>
+        <div class="metric-row"><span>{{ t('result.status') }}</span><strong class="status-pill status-{{ directory.status|lower|replace(' ', '-') }}">{{ directory.status }}</strong></div>
+        <div class="metric-row"><span>{{ t('result.match_score') }}</span><strong>{{ directory.match_score }}/100</strong></div>
+        {% if directory.match_method %}<div class="metric-row"><span>{{ t('result.match_method') }}</span><strong>{{ directory.match_method|replace('_', ' ')|title }}</strong></div>{% endif %}
+        {% if directory.package_id %}<div class="metric-row"><span>{{ t('result.matched_package') }}</span><strong>{{ directory.package_id }}</strong></div>{% endif %}
+        {% if directory.matched_app %}<div class="metric-row"><span>{{ t('result.closest') }}</span><strong>{{ directory.matched_app }}</strong></div>{% endif %}
+        {% if directory.status != 'Not listed' and directory.regulated_entity %}<div class="metric-row"><span>{{ t('result.regulated_entity') }}</span><strong>{{ directory.regulated_entity }}</strong></div>{% endif %}
+        {% if directory.status != 'Not listed' and directory.regulated_entities and directory.regulated_entities|length > 1 %}
+          <div class="metric-row"><span>{{ t('result.associations') }}</span><strong>{{ directory.regulated_entities|length }} {{ t('result.entities') }}</strong></div>
+          <div class="association-list">{% for entity in directory.regulated_entities[:5] %}<span>{{ entity }}</span>{% endfor %}{% if directory.regulated_entities|length > 5 %}<small>+{{ directory.regulated_entities|length - 5 }} {{ t('result.more') }}</small>{% endif %}</div>
+        {% endif %}
+        {% if directory.source_date %}<div class="metric-row"><span>{{ t('result.source_date') }}</span><strong>{{ directory.source_date }}</strong></div>{% endif %}
+        {% if directory.snapshot %}<div class="metric-row"><span>{{ t('result.snapshot_rows') }}</span><strong>{{ directory.snapshot.row_count }}</strong></div><div class="metric-row"><span>{{ t('result.snapshot_age') }}</span><strong>{{ directory.snapshot.age_days }} {{ t('result.day') if directory.snapshot.age_days == 1 else t('result.days') }}</strong></div>{% endif %}
+        <div class="analysis-note"><span>i</span><p>{{ directory.reason }}</p></div>
+      </section>
+
+      <section class="card analysis-card">
+        <div class="card-topline"><span class="module-icon">02</span><span class="eyebrow">{{ t('result.experimental') }}</span></div>
+        <h2>{{ t('result.explainable') }}</h2>
+        {% if risk.model_name %}<p class="model-caption"><strong>{{ risk.model_name }}</strong>{% if risk.model_scope %} · {{ risk.model_scope }}{% endif %}</p>{% endif %}
+        {% if risk.ready %}
+          <div class="risk-score-wrap"><div class="score-ring" style="--score: {{ risk.risk_score }};"><div><strong>{{ risk.risk_score }}</strong><span>/100</span></div></div><div class="risk-threshold"><small>{{ t('result.cutoff') }}</small><strong>{{ (high_risk_threshold * 100)|round(0)|int }}/100</strong></div></div>
+          <div class="score-track"><span style="width: {{ [risk.risk_score, 100]|min }}%"></span></div>
+          <h3 class="subheading">{{ t('result.ai_explanation') }}</h3><ul class="reason-list">{% for reason in risk.model_reasons %}<li><span>AI</span>{{ reason }}</li>{% endfor %}</ul>
+        {% else %}<div class="analysis-note danger-note"><span>!</span><p>{{ risk.model_reasons[0] }}</p></div>{% endif %}
+        <div class="listing-evidence-meter"><div><small>{{ t('result.coverage') }}</small><strong>{{ risk.listing_evidence_count }}/{{ risk.listing_evidence_total }}</strong></div><div class="score-track"><span style="width: {{ risk.listing_evidence_pct }}%"></span></div><div class="metric-row"><span>{{ t('result.rule_signal') }}</span><strong>{{ risk.listing_signal_level }}</strong></div></div>
+        {% if risk.contextual_signals %}<h3 class="subheading">{{ t('result.warnings') }} <small>({{ t('result.separate_ml') }})</small></h3><ul class="reason-list">{% for reason in risk.contextual_signals %}<li><span>!</span>{{ reason }}</li>{% endfor %}</ul>{% endif %}
+        {% if risk.positive_signals %}<h3 class="subheading positive-title">{{ t('result.positives') }}</h3><ul class="positive-list">{% for signal in risk.positive_signals %}<li><span>✓</span>{{ signal }}</li>{% endfor %}</ul>{% endif %}
+        {% if risk.unknown_listing_fields %}<div class="neutral-note compact-neutral-note"><span>?</span><p>{{ risk.unknown_listing_fields|length }} {{ t('result.unknown_fields') }}</p></div>{% endif %}
+      </section>
+
+      <section class="card analysis-card">
+        <div class="card-topline"><span class="module-icon">WEB</span><span class="eyebrow">{{ t('result.public_listing') }}</span></div>
+        <h2>{{ t('result.auto_scan') }}</h2>
+        {% if reference and reference.status == 'resolved' %}<div class="analysis-note"><span>↗</span><p><strong>{{ t('result.website_resolved') }}:</strong> {{ reference.input_url }} → {{ reference.package_id }}</p></div>{% endif %}
+        {% if metadata.status == 'ok' %}
+          <div class="cost-status-row">{% if metadata.stale_cache %}<span class="cost-attention-badge">{{ t('result.cached') }}</span>{% else %}<span class="cost-ok-badge">{{ t('result.fetched') }}</span>{% endif %}</div>
+          {% if metadata.title %}<div class="metric-row"><span>{{ t('result.store_title') }}</span><strong>{{ metadata.title }}</strong></div>{% endif %}
+          {% if metadata.developer %}<div class="metric-row"><span>{{ t('result.store_developer') }}</span><strong>{{ metadata.developer }}</strong></div>{% endif %}
+          {% if metadata.public_features.rating is not none %}<div class="metric-row"><span>{{ t('result.rating') }}</span><strong>{{ metadata.public_features.rating }}/5</strong></div>{% endif %}
+          {% if metadata.installs_display %}<div class="metric-row"><span>{{ t('result.installs') }}</span><strong>{{ metadata.installs_display }}</strong></div>{% endif %}
+          {% if metadata.released %}<div class="metric-row"><span>{{ t('result.released') }}</span><strong>{{ metadata.released }}</strong></div>{% endif %}
+          {% if metadata.updated %}<div class="metric-row"><span>{{ t('result.updated') }}</span><strong>{{ metadata.updated }}</strong></div>{% endif %}
+          {% if metadata.apr_text_detected is not none %}<div class="metric-row"><span>{{ t('result.explicit_apr') }}</span><strong>{{ t('check.yes') if metadata.apr_text_detected else t('check.no') }}</strong></div>{% endif %}
+          {% if metadata.permission_summary %}<div class="metric-row"><span>{{ t('result.permission_evidence') }}</span><strong>{{ metadata.permission_summary }}</strong></div>{% endif %}
+        {% else %}<div class="neutral-note"><span>?</span><p>{{ metadata.reason|default(t('result.public_unknown')) }}</p></div>{% endif %}
+      </section>
+
+      <section class="card analysis-card">
+        <div class="card-topline"><span class="module-icon">03</span><span class="eyebrow">{{ t('result.true_cost') }}</span></div>
+        <h2>{{ t('result.cost_affordability') }}</h2>
+        {% if cost and cost.valid %}
+          <div class="cost-status-row">{% if cost_attention %}<span class="cost-attention-badge">{{ t('result.cost_attention_badge') }}</span>{% else %}<span class="cost-ok-badge">{{ t('result.cost_calculated') }}</span>{% endif %}</div>
+          <div class="cost-highlight {% if cost_attention %}cost-highlight-attention{% endif %}"><small>{{ t('result.effective_apr') }}</small><strong>{% if cost.apr_percent is not none %}{{ cost.apr_percent }}%{% else %}N/A{% endif %}</strong><span>{{ t('result.cashflows') }}</span></div>
+          <div class="metric-row"><span>{{ t('result.loan_amount') }}</span><strong>₹{{ "%.2f"|format(cost.loan_amount) }}</strong></div>
+          <div class="metric-row"><span>{{ t('result.net_received') }}</span><strong>₹{{ "%.2f"|format(cost.net_received) }}</strong></div>
+          <div class="metric-row"><span>{{ t('result.total_repayable') }}</span><strong>₹{{ "%.2f"|format(cost.total_repayable) }}</strong></div>
+          <div class="metric-row"><span>{{ t('result.financing_cost') }}</span><strong>₹{{ "%.2f"|format(cost.financing_cost) }}</strong></div>
+          <div class="metric-row"><span>{{ t('result.emi_income') }}</span><strong>{% if cost.emi_income_ratio is not none %}{{ (cost.emi_income_ratio * 100)|round(1) }}%{% else %}N/A{% endif %}</strong></div>
+          <div class="affordability-line"><span>{{ t('result.threshold') }}</span><strong>{{ (affordability_threshold * 100)|round(0)|int }}%</strong></div>
+          {% if cost_attention %}<div class="cost-attention-note"><strong>{{ t('result.why_highlighted') }}</strong><p>Effective APR ≥ {{ cost_attention_apr|round(0)|int }}% project attention threshold.</p></div>{% endif %}
+          <p class="cost-caveat">{{ t('result.cost_caveat') }}</p>
+        {% elif cost %}<div class="analysis-note danger-note"><span>!</span><p>{{ cost.error }}</p></div>{% else %}<p>{{ t('result.cost_skipped') }}</p>{% endif %}
+      </section>
+    </div>
+
+    <section class="responsibility-strip"><strong>{{ t('result.responsible_title') }}</strong><p>{{ t('result.responsible_text') }}</p><small>{{ t('result.request_id') }}: {{ request_id }}</small></section>
+  </div>
+</details>
+
+<div class="result-actions reveal"><a class="finance-btn finance-btn-primary" href="{{ url_for('check_app') }}">{{ t('result.another') }} <span>→</span></a><a class="finance-btn finance-btn-outline" href="{{ url_for('status_page') }}">{{ t('result.system_status') }}</a><a class="finance-btn finance-btn-outline" href="{{ url_for('methodology') }}">{{ t('result.methodology') }}</a></div>
+{% endblock %}

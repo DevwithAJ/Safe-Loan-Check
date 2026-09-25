@@ -1,0 +1,35 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+
+# Python cache/build
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Secrets / local environment
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# Runtime/cache files
+instance/*.sqlite3
+instance/*.sqlite3-*
+*.log
+
+# Local survey exports: do not publish participant response files
+/data/real/survey_responses.csv
+*Form Responses*.csv
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

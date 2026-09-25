@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ t('nav.about') }} · Safe Loan Check{% endblock %}
+{% block content %}
+<section class="page-hero reveal"><div class="hero-badge"><span class="hero-badge-dot"></span> {{ t('about.badge') }}</div><span class="eyebrow">{{ t('about.eyebrow') }}</span><h1>{{ t('about.title') }}</h1><p>{{ t('about.desc') }}</p></section>
+<section class="about-grid">
+  <article class="card feature-card reveal"><span class="module-icon">P</span><h2>{{ t('about.problem') }}</h2><p>{{ t('about.problem_desc') }}</p></article>
+  <article class="card feature-card reveal"><span class="module-icon">S</span><h2>{{ t('about.solution') }}</h2><p>{{ t('about.solution_desc') }}</p></article>
+  <article class="card feature-card reveal"><span class="module-icon">R</span><h2>{{ t('about.responsible') }}</h2><p>{{ t('about.responsible_desc') }}</p></article>
+</section>
+<section class="card developer-card team-card reveal">
+  <span class="eyebrow">{{ t('about.team_eyebrow') }}</span>
+  <h2>{{ t('about.team_title') }}</h2>
+  <p>{{ t('about.team_desc') }}</p>
+  <div class="project-team-grid">
+    <article class="team-member team-leader-card">
+      <div class="developer-avatar" aria-hidden="true">AK</div>
+      <div>
+        <span class="team-role">{{ t('team.role_ajit') }}</span>
+        <h3>Ajit Kumar</h3>
+        <p class="team-role-desc">{{ t('team.role_ajit_desc') }}</p>
+        <a class="developer-link" href="https://github.com/DevwithAJ" target="_blank" rel="noopener">GitHub · DevwithAJ ↗</a>
+      </div>
+    </article>
+    <article class="team-member">
+      <div class="developer-avatar" aria-hidden="true">AJ</div>
+      <div><span class="team-role">{{ t('team.role_ajeet') }}</span><h3>Ajeet Kumar</h3><p class="team-role-desc">{{ t('team.role_ajeet_desc') }}</p></div>
+    </article>
+    <article class="team-member">
+      <div class="developer-avatar" aria-hidden="true">SK</div>
+      <div><span class="team-role">{{ t('team.role_sonu') }}</span><h3>Sonu Kumar</h3><p class="team-role-desc">{{ t('team.role_sonu_desc') }}</p></div>
+    </article>
+    <article class="team-member">
+      <div class="developer-avatar" aria-hidden="true">PM</div>
+      <div><span class="team-role">{{ t('team.role_parnav') }}</span><h3>Parnav Kr Mishra</h3><p class="team-role-desc">{{ t('team.role_parnav_desc') }}</p></div>
+    </article>
+  </div>
+</section>
+<section class="card limitations-card reveal"><span class="eyebrow">{{ t('about.limitations') }}</span><h2>{{ t('about.limitations_title') }}</h2><div class="limitation-grid"><div><strong>{{ t('about.not_legal') }}</strong><p>{{ t('about.not_legal_desc') }}</p></div><div><strong>{{ t('about.not_lending') }}</strong><p>{{ t('about.not_lending_desc') }}</p></div><div><strong>{{ t('about.data') }}</strong><p>{{ t('about.data_desc') }}</p></div><div><strong>{{ t('about.experimental') }}</strong><p>{{ t('about.experimental_desc') }}</p></div></div></section>
+{% endblock %}

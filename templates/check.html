@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}{{ t('check.title') }} · Safe Loan Check{% endblock %}
+{% block content %}
+<section class="page-head check-page-head reveal">
+  <div>
+    <div class="hero-badge"><span class="hero-badge-dot"></span> {{ t('check.badge') }}</div>
+    <span class="eyebrow">{{ t('check.eyebrow') }}</span>
+    <h1>{{ t('check.title') }}</h1>
+    <p>{{ t('check.subtitle') }}</p>
+  </div>
+  <img class="check-page-logo" src="{{ url_for('static', filename='img/safe-loan-check-icon.png') }}" alt="Safe Loan Check">
+</section>
+
+{% if errors %}
+<section class="form-error-panel reveal"><strong>{{ t('check.fix') }}</strong>{% for error in errors %}<p>{{ error }}</p>{% endfor %}</section>
+{% endif %}
+
+<div class="check-stepper reveal">
+  <div class="check-step active"><span>1</span><div><strong>{{ t('check.step1') }}</strong><small>{{ t('check.step1_small') }}</small></div></div>
+  <div class="check-step-line"></div>
+  <div class="check-step"><span>2</span><div><strong>{{ t('check.step2') }}</strong><small>{{ t('check.step2_small') }}</small></div></div>
+  <div class="check-step-line"></div>
+  <div class="check-step"><span>3</span><div><strong>{{ t('check.step3') }}</strong><small>{{ t('check.step3_small') }}</small></div></div>
+</div>
+
+<form method="post" action="{{ url_for('check') }}" class="analysis-form check-workspace" data-processing-form>
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+  <section class="card feature-card form-section reveal">
+    <div class="step-heading"><span class="step-number">01</span><div><span class="eyebrow">{{ t('check.verify') }}</span><h2>{{ t('check.identity_title') }}</h2><p>{{ t('check.identity_desc') }}</p></div></div>
+    <div class="form-grid form-grid-2">
+      <label>{{ t('check.app_name') }} <span class="label-note">{{ t('check.name_required') }}</span><input name="app_name" maxlength="120" value="{{ form_values.get('app_name', '') }}" placeholder="{{ t('check.app_placeholder') }}"></label>
+      <label>{{ t('check.developer') }} <span class="label-note">{{ t('check.optional') }}</span><input name="developer_name" maxlength="160" value="{{ form_values.get('developer_name', '') }}" placeholder="{{ t('check.developer_placeholder') }}"></label>
+    </div>
+    <label>{{ t('check.url') }} <span class="label-note">{{ t('check.url_note') }}</span><input name="app_reference_url" maxlength="600" value="{{ form_values.get('app_reference_url', form_values.get('play_store_url', '')) }}" placeholder="{{ t('check.url_placeholder') }}"></label>
+    <div class="info-strip"><span>i</span><p>{% if metadata_enabled %}{{ t('check.info_auto') }}{% else %}{{ t('check.info_disabled') }}{% endif %}</p></div>
+    {% if directory_meta and directory_meta.stale %}<div class="warning-note">{{ t('check.stale', days=directory_meta.age_days) }}</div>{% endif %}
+  </section>
+
+  <section class="card feature-card form-section reveal optional-evidence-card">
+    <div class="step-heading compact-step-heading"><span class="step-number">02</span><div><span class="eyebrow">{{ t('check.public') }}</span><h2>{{ t('check.manual_title') }}</h2><p>{{ t('check.manual_desc') }}</p></div></div>
+    <details class="advanced-evidence">
+      <summary><span><strong>{{ t('check.advanced') }}</strong><small>{{ t('check.advanced_small') }}</small></span><span class="summary-chevron">⌄</span></summary>
+      <div class="advanced-evidence-body">
+        <div class="risk-group-title">{{ t('check.permissions') }}</div>
+        <div class="tri-grid">
+          {% for field, key in [('contacts_permission','check.contacts'),('call_logs_permission','check.calls'),('sms_permission','check.sms'),('media_permission','check.media')] %}
+          <label>{{ t(key) }}{% set val = form_values.get(field, 'unknown') %}<select name="{{ field }}"><option value="unknown" {% if val not in ['yes','no'] %}selected{% endif %}>{{ t('check.unknown') }}</option><option value="no" {% if val == 'no' %}selected{% endif %}>{{ t('check.no') }}</option><option value="yes" {% if val == 'yes' %}selected{% endif %}>{{ t('check.yes') }}</option></select></label>
+          {% endfor %}
+        </div>
+        <div class="risk-group-title">{{ t('check.transparency') }}</div>
+        <div class="tri-grid">
+          {% for field, key in [('named_regulated_lender','check.lender_named'),('apr_disclosed','check.apr_disclosed'),('developer_website_present','check.website_present'),('physical_address_present','check.address_present'),('company_email_domain','check.company_email')] %}
+          <label>{{ t(key) }}{% set val = form_values.get(field, 'unknown') %}<select name="{{ field }}"><option value="unknown" {% if val not in ['yes','no'] %}selected{% endif %}>{{ t('check.unknown') }}</option><option value="no" {% if val == 'no' %}selected{% endif %}>{{ t('check.no') }}</option><option value="yes" {% if val == 'yes' %}selected{% endif %}>{{ t('check.yes') }}</option></select></label>
+          {% endfor %}
+        </div>
+        <div class="risk-group-title">{{ t('check.metrics') }}</div>
+        <div class="form-grid form-grid-3 numeric-grid">
+          <label>{{ t('check.app_age') }} <span class="label-note">{{ t('check.days') }}</span><input type="number" min="0" max="36500" name="app_age_days" value="{{ form_values.get('app_age_days', '') }}" placeholder="{{ t('check.unknown') }}"></label>
+          <label>{{ t('check.days_update') }}<input type="number" min="0" max="36500" name="days_since_update" value="{{ form_values.get('days_since_update', '') }}" placeholder="{{ t('check.unknown') }}"></label>
+          <label>{{ t('check.installs') }}<input type="number" min="0" max="10000000000" name="installs" value="{{ form_values.get('installs', '') }}" placeholder="{{ t('check.unknown') }}"></label>
+          <label>{{ t('check.rating') }} <span class="label-note">0–5</span><input type="number" min="0" max="5" step="0.1" name="rating" value="{{ form_values.get('rating', '') }}" placeholder="{{ t('check.unknown') }}"></label>
+          <label>{{ t('check.complaint') }} <span class="label-note">0–1</span><input type="number" min="0" max="1" step="0.01" name="complaint_rate" value="{{ form_values.get('complaint_rate', '') }}" placeholder="{{ t('check.unknown') }}"></label>
+          <label>{{ t('check.name_similarity') }} <span class="label-note">{{ t('check.context_only') }}</span><input type="number" min="0" max="100" step="1" name="name_similarity" value="{{ form_values.get('name_similarity', '') }}" placeholder="{{ t('check.unknown') }}"></label>
+        </div>
+        <div class="neutral-note"><span>?</span><p>{{ t('check.do_not_guess') }}</p></div>
+      </div>
+    </details>
+  </section>
+
+  <section class="card feature-card form-section reveal">
+    <div class="step-heading"><span class="step-number">03</span><div><span class="eyebrow">{{ t('check.true_cost') }}</span><h2>{{ t('check.cost_title') }}</h2><p>{{ t('check.cost_desc') }}</p></div></div>
+    {% set cost_enabled = form_values.get('calculate_cost') in ['on','1','true','yes'] %}
+    <label class="switch-row"><input type="checkbox" name="calculate_cost" data-cost-toggle {% if cost_enabled %}checked{% endif %}><span class="switch-ui"></span><span class="switch-copy"><strong>{{ t('check.calculate_apr') }}</strong><small>{{ t('check.cost_disabled') }}</small></span></label>
+    <fieldset class="cost-fieldset" data-cost-fields {% if not cost_enabled %}disabled{% endif %}>
+      <div class="form-grid form-grid-3 numeric-grid">
+        <label>{{ t('check.loan_amount') }} <span class="label-note">₹</span><input type="number" step="0.01" min="1" max="10000000" name="loan_amount" value="{{ form_values.get('loan_amount', '') }}" placeholder="{{ t('check.actual_amount') }}"></label>
+        <label>{{ t('check.processing_fee') }} <span class="label-note">₹</span><input type="number" step="0.01" min="0" max="10000000" name="processing_fee" value="{{ form_values.get('processing_fee', '') }}" placeholder="{{ t('check.actual_fee') }}"></label>
+        <label>{{ t('check.other_fees') }} <span class="label-note">₹</span><input type="number" step="0.01" min="0" max="10000000" name="other_upfront_fees" value="{{ form_values.get('other_upfront_fees', '') }}" placeholder="{{ t('check.actual_fees') }}"></label>
+        <label>{{ t('check.emi') }} <span class="label-note">₹</span><input type="number" step="0.01" min="1" max="10000000" name="emi" value="{{ form_values.get('emi', '') }}" placeholder="{{ t('check.actual_emi') }}"></label>
+        <label>{{ t('check.tenure') }} <span class="label-note">{{ t('check.months') }}</span><input type="number" min="1" max="360" name="tenure_months" value="{{ form_values.get('tenure_months', '') }}" placeholder="{{ t('check.months') }}"></label>
+        <label>{{ t('check.income') }} <span class="label-note">{{ t('check.income_optional') }}</span><input type="number" step="0.01" min="0" max="100000000" name="monthly_income" value="{{ form_values.get('monthly_income', '') }}" placeholder="{{ t('check.for_affordability') }}"></label>
+      </div>
+    </fieldset>
+  </section>
+
+  <div class="submit-panel reveal"><div><span class="eyebrow">{{ t('check.ready') }}</span><strong>{{ t('check.ready_title') }}</strong><small>{{ t('check.ready_small') }}</small></div><button class="finance-btn finance-btn-primary submit-btn" type="submit">{{ t('check.run') }} <span>→</span></button></div>
+</form>
+{% endblock %}

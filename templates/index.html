@@ -1,0 +1,144 @@
+
+{% extends "base.html" %}
+{% block title %}Safe Loan Check · Digital Loan Safety Intelligence{% endblock %}
+{% block content %}
+
+<section class="finance-hero reveal">
+  <div class="finance-hero-content">
+    <div class="hero-badge"><span class="hero-badge-dot"></span> AI-Assisted Digital Loan Safety Tool</div>
+    <h1>Check the app. <span>Understand the risk.</span></h1>
+    <p class="hero-description">
+      Verify a digital loan app against the loaded DLA directory, inspect public risk signals with an explainable ML model,
+      and calculate the true cost of a loan before you proceed.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#loan-check-form" class="finance-btn finance-btn-primary">Start Safety Check <span>→</span></a>
+      <a href="{{ url_for('methodology') }}" class="finance-btn finance-btn-outline">How it works</a>
+    </div>
+
+    <div class="hero-mini-features">
+      <div><span class="mini-check">✓</span> Directory Verification</div>
+      <div><span class="mini-check">✓</span> Explainable ML Risk</div>
+      <div><span class="mini-check">✓</span> APR & Affordability</div>
+    </div>
+  </div>
+
+  <div class="finance-hero-visual">
+    <div class="hero-glow"></div>
+    <div class="hero-logo-box">
+      <div class="shield-core">
+        <span class="shield-icon">✓</span>
+        <strong>SAFE</strong>
+        <small>LOAN CHECK</small>
+      </div>
+    </div>
+    <div class="system-online"><span class="online-dot"></span> Safety Engine <strong>Online</strong></div>
+
+    <div class="floating-card floating-health">
+      <div class="floating-icon">RBI</div>
+      <div><small>Directory</small><strong>Identity Check</strong></div>
+    </div>
+
+    <div class="floating-card floating-ai">
+      <div class="floating-icon">AI</div>
+      <div><small>Risk Signals</small><strong>0–100 Score</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="finance-stats reveal">
+  <div class="finance-stat"><strong>3</strong><span>Safety Checks</span></div>
+  <div class="finance-stat"><strong>0–100</strong><span>ML Risk Score</span></div>
+  <div class="finance-stat"><strong>APR</strong><span>True Cost</span></div>
+  <div class="finance-stat"><strong>G/A/R</strong><span>Decision Layer</span></div>
+</section>
+
+<section class="section-head reveal" id="loan-check-form">
+  <span class="eyebrow">SAFE LOAN CHECK WORKSPACE</span>
+  <h2>Run all three checks in one workflow.</h2>
+  <p class="section-copy">Enter only information available from the app listing or loan offer. The final project should use real, traceable Indian data.</p>
+</section>
+
+<form method="post" action="/check" class="analysis-form" data-processing-form>
+  <section class="card feature-card form-section reveal">
+    <div class="step-heading">
+      <span class="step-number">01</span>
+      <div><span class="eyebrow">VERIFY</span><h2>App Identity</h2></div>
+    </div>
+    <div class="form-grid form-grid-2">
+      <label>App name
+        <input name="app_name" placeholder="e.g. Demo Student Credit" required>
+      </label>
+      <label>Developer name
+        <input name="developer_name" placeholder="Developer / company">
+      </label>
+    </div>
+    <label>Google Play / official website URL <span class="label-note">Optional</span>
+      <input name="app_reference_url" placeholder="https://play.google.com/... or https://example.com/">
+    </label>
+    <div class="info-strip">
+      <span>i</span>
+      <p>Production Candidate v2.6 uses a local dated directory copy and can optionally fetch cached public metadata for an explicit Google Play URL.</p>
+    </div>
+  </section>
+
+  <section class="card feature-card form-section reveal">
+    <div class="step-heading">
+      <span class="step-number">02</span>
+      <div><span class="eyebrow">RISK SIGNALS</span><h2>Public Listing Signals (context for ML v1)</h2></div>
+    </div>
+
+    <div class="signal-grid">
+      <label class="signal-check"><input type="checkbox" name="contacts_permission"><span>Requests contacts</span></label>
+      <label class="signal-check"><input type="checkbox" name="call_logs_permission"><span>Requests call logs</span></label>
+      <label class="signal-check"><input type="checkbox" name="sms_permission"><span>Requests SMS</span></label>
+      <label class="signal-check"><input type="checkbox" name="media_permission"><span>Requests media/files</span></label>
+      <label class="signal-check positive"><input type="checkbox" name="named_regulated_lender"><span>Names regulated lender</span></label>
+      <label class="signal-check positive"><input type="checkbox" name="apr_disclosed"><span>Discloses APR/fees</span></label>
+      <label class="signal-check positive"><input type="checkbox" name="developer_website_present"><span>Developer website present</span></label>
+      <label class="signal-check positive"><input type="checkbox" name="physical_address_present"><span>Physical address present</span></label>
+      <label class="signal-check positive"><input type="checkbox" name="company_email_domain"><span>Company-domain email present</span></label>
+    </div>
+
+    <div class="form-grid form-grid-3 numeric-grid">
+      <label>App age <span class="label-note">days</span><input type="number" min="0" name="app_age_days" value="365"></label>
+      <label>Days since update<input type="number" min="0" name="days_since_update" value="30"></label>
+      <label>Installs<input type="number" min="0" name="installs" value="10000"></label>
+      <label>Rating <span class="label-note">0–5</span><input type="number" min="0" max="5" step="0.1" name="rating" value="4.0"></label>
+      <label>Complaint rate <span class="label-note">0–1</span><input type="number" min="0" max="1" step="0.01" name="complaint_rate" value="0.10"></label>
+      <label>Name similarity <span class="label-note">0–100</span><input type="number" min="0" max="100" step="1" name="name_similarity" value="20"></label>
+    </div>
+  </section>
+
+  <section class="card feature-card form-section reveal">
+    <div class="step-heading">
+      <span class="step-number">03</span>
+      <div><span class="eyebrow">TRUE COST</span><h2>Loan Cost & Affordability</h2></div>
+    </div>
+
+    <label class="switch-row">
+      <input type="checkbox" name="calculate_cost" checked>
+      <span class="switch-ui"></span>
+      <span><strong>Calculate effective APR and affordability</strong><small>Uses actual cash flows from net amount received and EMIs.</small></span>
+    </label>
+
+    <div class="form-grid form-grid-3 numeric-grid">
+      <label>Loan amount <span class="label-note">₹</span><input type="number" step="0.01" min="0" name="loan_amount" value="10000"></label>
+      <label>Processing fee <span class="label-note">₹</span><input type="number" step="0.01" min="0" name="processing_fee" value="500"></label>
+      <label>Other upfront fees <span class="label-note">₹</span><input type="number" step="0.01" min="0" name="other_upfront_fees" value="0"></label>
+      <label>EMI <span class="label-note">₹</span><input type="number" step="0.01" min="0" name="emi" value="1900"></label>
+      <label>Tenure <span class="label-note">months</span><input type="number" min="1" name="tenure_months" value="6"></label>
+      <label>Monthly income / allowance <span class="label-note">₹</span><input type="number" step="0.01" min="0" name="monthly_income" value="15000"></label>
+    </div>
+  </section>
+
+  <div class="submit-panel reveal">
+    <div>
+      <span class="eyebrow">READY</span>
+      <strong>Verify identity + score risk + calculate true cost</strong>
+    </div>
+    <button class="finance-btn finance-btn-primary submit-btn" type="submit">Run Safe Loan Check <span>→</span></button>
+  </div>
+</form>
+{% endblock %}

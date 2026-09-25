@@ -1,0 +1,19 @@
+{
+  "available": true,
+  "row_count": 2750,
+  "raw_record_count": 2758,
+  "excluded_non_app_rows": 8,
+  "unique_app_names": 1118,
+  "regulated_entities": 442,
+  "package_rows": 939,
+  "unique_packages": 421,
+  "sha256": "656a2f098cd22b533b162c48e14b2f41244b4ce1487dcd7853437ffb4054571d",
+  "snapshot_date": "2026-09-25",
+  "age_days": 0,
+  "stale": false,
+  "stale_after_days": 45,
+  "source_url": "https://data.rbi.org.in/BOE/OpenDocument/opendoc/custom.jsp?iDocID=ARfEgy.WNSVIvFfvSIVmBCw&sIDType=CUID",
+  "source_file": "RBI_DLA_Official_2026-09-25.xlsx",
+  "download_date": "2026-09-25",
+  "note": "Local dated RBI DLA snapshot. Android package ids are extracted from direct, embedded, scheme-less, wrapped, test-path, and compatible Android-store links when present."
+}

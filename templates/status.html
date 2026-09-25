@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ t('result.system_status') }} · Safe Loan Check{% endblock %}
+{% block content %}
+<section class="page-head reveal"><div><span class="eyebrow">{{ t('status.eyebrow') }}</span><h1>{{ t('status.title') }}</h1><p>{{ t('status.desc') }}</p></div></section>
+<div class="result-grid status-grid">
+  <section class="card analysis-card reveal"><span class="eyebrow">{{ t('status.directory') }}</span><h2>{{ t('status.available') if directory_meta.available else t('status.unavailable') }}</h2><div class="metric-row"><span>{{ t('status.rows') }}</span><strong>{{ directory_meta.row_count }}</strong></div><div class="metric-row"><span>{{ t('status.snapshot') }}</span><strong>{{ directory_meta.snapshot_date or t('common.unknown') }}</strong></div><div class="metric-row"><span>{{ t('status.age') }}</span><strong>{% if directory_meta.age_days is not none %}{{ directory_meta.age_days }} {{ t('result.days') }}{% else %}{{ t('common.unknown') }}{% endif %}</strong></div><div class="metric-row"><span>{{ t('status.freshness') }}</span><strong>{{ t('status.stale') if directory_meta.stale else t('status.current') }}</strong></div></section>
+  <section class="card analysis-card reveal"><span class="eyebrow">{{ t('status.ml') }}</span><h2>{{ t('status.ready') if model_health.ready else t('status.unavailable') }}</h2><div class="metric-row"><span>{{ t('status.model') }}</span><strong>{{ model_health.model_name or t('common.unknown') }}</strong></div><div class="metric-row"><span>{{ t('status.version') }}</span><strong>{{ model_health.model_version or t('common.unknown') }}</strong></div>{% if model_health.error %}<div class="warning-note">{{ model_health.error }}</div>{% endif %}</section>
+  <section class="card analysis-card reveal"><span class="eyebrow">{{ t('status.metadata') }}</span><h2>{{ t('status.enabled') if metadata_enabled else t('status.disabled') }}</h2><div class="metric-row"><span>{{ t('status.provider') }}</span><strong>{{ t('status.yes') if metadata_provider_available else t('status.no') }}</strong></div><p>{{ t('status.metadata_desc') }}</p></section>
+</div>
+{% endblock %}

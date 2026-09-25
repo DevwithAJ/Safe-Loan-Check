@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="{{ current_lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <meta name="description" content="Safe Loan Check helps users verify digital loan app identity, inspect risk signals and estimate true loan cost.">
+  <meta name="author" content="Ajit Kumar; Ajeet Kumar; Sonu Kumar; Parnav Kr Mishra">
+  <meta name="creator" content="Safe Loan Check Team">
+  <meta name="application-name" content="Safe Loan Check">
+  <title>{% block title %}Safe Loan Check{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="{% if show_language_gate %}language-gate-open{% endif %}">
+  {% if show_language_gate %}
+  <div class="language-gate" role="dialog" aria-modal="true" aria-labelledby="languageGateTitle">
+    <div class="language-gate-card">
+      <img src="{{ url_for('static', filename='img/safe-loan-check-icon.png') }}" alt="Safe Loan Check">
+      <span class="eyebrow">SAFE LOAN CHECK</span>
+      <h1 id="languageGateTitle">{{ t('language.choose_title') }}</h1>
+      <p>{{ t('language.choose_subtitle') }}</p>
+      <div class="language-choice-grid">
+        <a class="language-choice" href="{{ url_for('set_language', lang='en', next=request.full_path) }}">
+          <span class="language-code">EN</span>
+          <strong>{{ t('language.english') }}</strong>
+          <small>{{ t('language.english_desc') }}</small>
+        </a>
+        <a class="language-choice" href="{{ url_for('set_language', lang='hi', next=request.full_path) }}">
+          <span class="language-code">अ</span>
+          <strong>{{ t('language.hindi') }}</strong>
+          <small>{{ t('language.hindi_desc') }}</small>
+        </a>
+      </div>
+      <div class="language-developer-credit team-credit-compact">
+        <strong>{{ t('team.credit') }}</strong>
+        <span><strong>Ajit Kumar</strong> — {{ t('team.role_ajit') }}</span>
+        <span>Ajeet Kumar — {{ t('team.role_ajeet') }}</span>
+        <span>Sonu Kumar — {{ t('team.role_sonu') }}</span>
+        <span>Parnav Kr Mishra — {{ t('team.role_parnav') }}</span>
+        <a href="https://github.com/DevwithAJ" target="_blank" rel="noopener">GitHub · @DevwithAJ</a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div id="appSplash" class="app-splash" aria-hidden="true">
+    <img class="splash-logo" src="{{ url_for('static', filename='img/safe-loan-check-icon.png') }}" alt="">
+    <div class="splash-copy">
+      <strong>Safe Loan Check</strong>
+      <span>{{ t('splash.initializing') }}</span>
+    </div>
+    <div class="splash-line"><span></span></div>
+  </div>
+
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('home') }}" aria-label="Safe Loan Check home">
+      <img class="brand-logo" src="{{ url_for('static', filename='img/safe-loan-check-icon.png') }}" alt="Safe Loan Check logo">
+      <span>
+        <strong class="brand-name">Safe Loan Check</strong>
+        <small class="brand-subtitle">{{ t('brand.subtitle') }}</small>
+      </span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation">☰</button>
+
+    <nav id="mainNav">
+      <a href="{{ url_for('home') }}">{{ t('nav.home') }}</a>
+      <a href="{{ url_for('check_app') }}">{{ t('nav.check') }}</a>
+      <a href="{{ url_for('methodology') }}">{{ t('nav.methodology') }}</a>
+      <a href="{{ url_for('status_page') }}">{{ t('nav.status') }}</a>
+      <a href="{{ url_for('about') }}">{{ t('nav.about') }}</a>
+      <div class="language-switch" aria-label="{{ t('nav.language') }}">
+        <a class="{% if current_lang == 'en' %}active{% endif %}" href="{{ url_for('set_language', lang='en', next=request.full_path) }}">EN</a>
+        <span>/</span>
+        <a class="{% if current_lang == 'hi' %}active{% endif %}" href="{{ url_for('set_language', lang='hi', next=request.full_path) }}">हिंदी</a>
+      </div>
+      <a class="nav-cta" href="{{ url_for('check_app') }}">{{ t('nav.run') }}</a>
+    </nav>
+  </header>
+
+  <div class="demo-banner production-banner">
+    <span class="demo-dot"></span>
+    <strong>{{ data_mode|default("DEMO DATA") }}</strong>
+    {% if data_mode|default("DEMO DATA") == "REAL RBI DIRECTORY" %}
+      <span>{{ t('banner.production') }}</span>
+    {% elif data_mode|default("DEMO DATA") == "RBI DIRECTORY UNAVAILABLE" %}
+      <span>{{ t('banner.unavailable') }}</span>
+    {% else %}
+      <span>{{ t('banner.demo') }}</span>
+    {% endif %}
+  </div>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <a class="footer-brand" href="{{ url_for('home') }}">
+          <img class="footer-logo" src="{{ url_for('static', filename='img/safe-loan-check-icon.png') }}" alt="">
+          <strong>Safe Loan Check</strong>
+        </a>
+        <p>{{ t('footer.description') }}</p>
+      </div>
+      <div>
+        <h4>{{ t('footer.quick_links') }}</h4>
+        <a href="{{ url_for('home') }}">{{ t('nav.home') }}</a>
+        <a href="{{ url_for('check_app') }}">{{ t('footer.check') }}</a>
+        <a href="{{ url_for('methodology') }}">{{ t('nav.methodology') }}</a>
+        <a href="{{ url_for('status_page') }}">{{ t('result.system_status') }}</a>
+      </div>
+      <div>
+        <h4>{{ t('footer.trust') }}</h4>
+        <a href="{{ url_for('privacy') }}">{{ t('footer.privacy') }}</a>
+        <a href="{{ url_for('terms') }}">{{ t('footer.terms') }}</a>
+        <span>{{ t('footer.not_stored') }}</span>
+        <span>{{ t('footer.cached') }}</span>
+      </div>
+      <div>
+        <h4>{{ t('footer.responsible') }}</h4>
+        <p>{{ t('footer.responsible_text') }}</p>
+        <div class="system-status"><span></span> {{ t('footer.online') }}</div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Safe Loan Check · {{ app_version|default('v2') }} · <strong>Ajit Kumar</strong> — {{ t('team.role_ajit') }} · Ajeet Kumar · Sonu Kumar · Parnav Kr Mishra</div>
+  </footer>
+
+  <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">↑</button>
+
+  <div id="processingOverlay" class="processing-overlay" aria-hidden="true">
+    <div class="processing-card">
+      <img class="processing-logo" src="{{ url_for('static', filename='img/safe-loan-check-icon.png') }}" alt="">
+      <div class="spinner"></div>
+      <strong>{{ t('processing.title') }}</strong>
+      <span>{{ t('processing.text') }}</span>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

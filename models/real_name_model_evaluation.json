@@ -1,0 +1,200 @@
+{
+  "model_version": "real-label-name-signal-v1",
+  "dataset": {
+    "records": 233,
+    "verified": 200,
+    "risky": 33,
+    "source_file": "data/real/feature_collection_worklist.csv",
+    "synthetic_rows": 0
+  },
+  "validation": {
+    "split": "stratified 80:20",
+    "random_state": 42,
+    "train_records": 186,
+    "test_records": 47,
+    "training_target": {
+      "recall_risky_min": 0.75,
+      "precision_risky_min": 0.3
+    },
+    "selection_rule": "Select using training-only 5-fold CV: target met first, then PR-AUC, then F1. Test set touched after selection."
+  },
+  "training_cv_results": {
+    "lexical_random_forest": {
+      "threshold": 0.4199999999999998,
+      "met_training_target": true,
+      "precision_risky": 0.4375,
+      "recall_risky": 0.8076923076923077,
+      "f1_risky": 0.5675675675675675,
+      "pr_auc": 0.6156572405137056,
+      "confusion_matrix": [
+        [
+          133,
+          27
+        ],
+        [
+          5,
+          21
+        ]
+      ]
+    },
+    "lexical_logistic_regression": {
+      "threshold": 0.5199999999999998,
+      "met_training_target": true,
+      "precision_risky": 0.4878048780487805,
+      "recall_risky": 0.7692307692307693,
+      "f1_risky": 0.5970149253731343,
+      "pr_auc": 0.4806816248112483,
+      "confusion_matrix": [
+        [
+          139,
+          21
+        ],
+        [
+          6,
+          20
+        ]
+      ]
+    },
+    "lexical_hist_gradient_boosting": {
+      "threshold": 0.1,
+      "met_training_target": true,
+      "precision_risky": 0.3442622950819672,
+      "recall_risky": 0.8076923076923077,
+      "f1_risky": 0.4827586206896552,
+      "pr_auc": 0.3694331779345143,
+      "confusion_matrix": [
+        [
+          120,
+          40
+        ],
+        [
+          5,
+          21
+        ]
+      ]
+    }
+  },
+  "selected_model": "lexical_random_forest",
+  "selected_threshold": 0.4199999999999998,
+  "held_out_test": {
+    "precision_risky": 0.5,
+    "recall_risky": 1.0,
+    "f1_risky": 0.6666666666666666,
+    "pr_auc": 0.577922077922078,
+    "confusion_matrix": [
+      [
+        33,
+        7
+      ],
+      [
+        0,
+        7
+      ]
+    ]
+  },
+  "same_input_baseline": {
+    "rule": "Risky if app name contains substring 'cash' or 'loan'",
+    "precision_risky": 0.2631578947368421,
+    "recall_risky": 0.7142857142857143,
+    "f1_risky": 0.38461538461538464,
+    "confusion_matrix": [
+      [
+        26,
+        14
+      ],
+      [
+        2,
+        5
+      ]
+    ]
+  },
+  "feature_importance": [
+    {
+      "feature": "name_length_chars",
+      "importance": 0.301189
+    },
+    {
+      "feature": "name_uppercase_ratio",
+      "importance": 0.201134
+    },
+    {
+      "feature": "name_word_count",
+      "importance": 0.178337
+    },
+    {
+      "feature": "name_has_cash",
+      "importance": 0.139931
+    },
+    {
+      "feature": "name_symbol_count",
+      "importance": 0.05247
+    },
+    {
+      "feature": "name_has_loan",
+      "importance": 0.051173
+    },
+    {
+      "feature": "name_has_rupee",
+      "importance": 0.023052
+    },
+    {
+      "feature": "name_digit_count",
+      "importance": 0.009943
+    },
+    {
+      "feature": "name_has_credit",
+      "importance": 0.008564
+    },
+    {
+      "feature": "name_has_money",
+      "importance": 0.007945
+    },
+    {
+      "feature": "name_has_instant",
+      "importance": 0.005135
+    },
+    {
+      "feature": "name_has_quick",
+      "importance": 0.00511
+    },
+    {
+      "feature": "name_has_lend",
+      "importance": 0.004951
+    },
+    {
+      "feature": "name_has_paisa",
+      "importance": 0.004744
+    },
+    {
+      "feature": "name_has_kredit",
+      "importance": 0.002712
+    },
+    {
+      "feature": "name_has_finance",
+      "importance": 0.002315
+    },
+    {
+      "feature": "name_has_easy",
+      "importance": 0.001296
+    },
+    {
+      "feature": "name_has_borrow",
+      "importance": 0.0
+    },
+    {
+      "feature": "name_has_advance",
+      "importance": 0.0
+    },
+    {
+      "feature": "name_has_emi",
+      "importance": 0.0
+    }
+  ],
+  "limitations": [
+    "This v1 model uses only public app-name lexical features, because risky-labelled apps do not yet have balanced listing/permission metadata.",
+    "It does not use directory_status or name_similarity, avoiding direct leakage from the RBI directory label definition.",
+    "The preferred contacts-permission baseline from the project guide cannot yet be evaluated on the real risky set because permission metadata is missing.",
+    "A later v2 should retrain on balanced public listing features and review complaint features when those are collected for both classes.",
+    "The model is an educational risk-signal model, not a legality determination or financial advice."
+  ]
+}

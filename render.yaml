@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://render.com/schema/render.yaml.json
+services:
+  - type: web
+    name: safe-loan-check
+    runtime: docker
+    plan: free
+    region: singapore
+    healthCheckPath: /readyz
+    autoDeployTrigger: commit
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: TRUST_PROXY
+        value: "1"
+      - key: FORCE_HSTS
+        value: "1"
+      - key: SESSION_COOKIE_SECURE
+        value: "1"
+      - key: AUTO_METADATA_ENABLED
+        value: "1"
+      - key: REVIEW_ANALYSIS_ENABLED
+        value: "0"
+      - key: ENABLE_API
+        value: "0"
+      - key: GUNICORN_THREADS
+        value: "2"
+      - key: GUNICORN_TIMEOUT
+        value: "45"
+      - key: LOG_LEVEL
+        value: info

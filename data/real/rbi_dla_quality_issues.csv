@@ -1,0 +1,3 @@
+source_excel_row,issue,action
+2365,Repeated/shifted header content embedded as a data row (Sr.No / Name of DLA / owner header text).,Excluded from cleaned lookup dataset.
+multiple,59 exact duplicate lookup records found after normalization.,Dropped exact duplicates from cleaned lookup dataset.
